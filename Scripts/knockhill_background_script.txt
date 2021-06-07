@@ -1,0 +1,56 @@
+HoldTime = 5;
+
+Sector1Distance = 537;
+Sector2Distance = 1347;
+
+LapNumColor = ColorA;
+CurLapTimeColor = ColorB;
+LapTimeColor = ColorC;
+BestLapTimeColor = ColorD;
+BackColor = ColorE;
+TrimColor = ColorF;
+
+Digits = 2;
+Compact = 2;
+
+FontSize = 48;
+
+OffsetX = 6;
+OffsetY = 6;
+
+TopY = SizeY - OffsetY;
+LabelX = 75;
+SectorX = SizeX * 3 / 5;
+
+GapX = 15;
+GapY = 5;
+
+StepY = FontSize + GapY;
+
+CurrentSector = 0;
+
+Sector1Prev = 0;
+Sector1 = 0;
+Sector1Best = 9999999;
+Sector1BestPrev = 9999999;
+
+Sector2 = 0;
+Sector2Best = 9999999;
+Sector2BestPrev = 9999999;
+
+Sector3 = 0;
+Sector3Best = 9999999;
+Sector3BestPrev = 9999999;
+
+//Draw Filled Background
+//DrawRRect(OffsetX, OffsetY, SizeX - OffsetX, SizeY - OffsetY, BackColor, Transparent);
+
+//Draw Outer Trim
+//DrawRRect(OffsetX, OffsetY, SizeX - OffsetX, SizeY - OffsetY, TrimColor, 3);
+
+Y = SizeY - StepY;
+DrawText("S1", LabelX, Y, LapNumColor, FontSize, AlignH_Right);
+Y -= StepY;
+DrawText("S2", LabelX, Y, LapNumColor, FontSize, AlignH_Right);
+Y -= StepY;
+DrawText("S3", LabelX, Y, LapNumColor, FontSize, AlignH_Right);

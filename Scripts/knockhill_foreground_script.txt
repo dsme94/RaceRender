@@ -1,0 +1,122 @@
+Y = SizeY - StepY;
+
+LapTime = GetCurLapTime();
+
+
+// Determine CurrentSector
+if(GetCurLapNum() == 0) {
+	CurrentSector = 0;
+} else if(DataValue < Sector1Distance) {
+	if(CurrentSector == 3) {
+		//Save Sectors
+		Sector1BestPrev = Sector1Best;
+		Sector2BestPrev = Sector2Best;
+		Sector3BestPrev = Sector3Best;
+		if(Sector1 < Sector1Best) {
+			Sector1Best = Sector1;
+		}
+		if(Sector2 < Sector2Best) {
+			Sector2Best = Sector2;
+		}
+		if(Sector3 < Sector3Best) {
+			Sector3Best = Sector3;
+		}
+		Sector1Prev = Sector1;
+	}
+	CurrentSector = 1;
+	Sector1 = GetCurLapTime();
+} else if(DataValue < Sector2Distance) {
+	CurrentSector = 2;
+	Sector2 = GetCurLapTime() - Sector1;
+} else {
+	CurrentSector = 3;
+	Sector3 = GetCurLapTime() - Sector2 - Sector1;
+}
+
+if(GetCurLapTime() < HoldTime && Sector3 > 1) {
+	// Just started a new lap; show the previous lap for HoldTime seconds
+	// Sector 1
+	DrawTime(Sector1Prev, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+	if(Sector1BestPrev < 9999999) {
+		SectorDiff = Sector1Prev - Sector1BestPrev;
+		SectorDiffText = FormatNumber(SectorDiff, Digits);
+		DiffColor = BestLapTimeColor;
+		if(SectorDiff > 0) {
+			SectorDiffText = "+" + SectorDiffText;
+			DiffColor = CurLapTimeColor;
+		}
+		DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+	}
+
+	// Sector 2
+	Y -= StepY;
+	DrawTime(Sector2, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+	if(Sector2BestPrev < 9999999) {
+		SectorDiff = Sector2 - Sector2BestPrev;
+		SectorDiffText = FormatNumber(SectorDiff, Digits);
+		DiffColor = BestLapTimeColor;
+		if(SectorDiff > 0) {
+			SectorDiffText = "+" + SectorDiffText;
+			DiffColor = CurLapTimeColor;
+		}
+		DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+	}
+
+	// Sector 3
+	Y -= StepY;
+	DrawTime(Sector3, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+	if(Sector3BestPrev < 9999999) {
+		SectorDiff = Sector3 - Sector3BestPrev;
+		SectorDiffText = FormatNumber(SectorDiff, Digits);
+		DiffColor = BestLapTimeColor;
+		if(SectorDiff > 0) {
+			SectorDiffText = "+" + SectorDiffText;
+			DiffColor = CurLapTimeColor;
+		}
+		DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+	}
+} else {
+	if(CurrentSector == 1) {
+		DrawTime(Sector1, Digits, SectorX, Y, CurLapTimeColor, FontSize, AlignH_Right, Compact);
+	} else if(CurrentSector == 2) {
+		DrawTime(Sector1, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+		if(Sector1Best < 9999999) {
+			SectorDiff = Sector1 - Sector1Best;
+			SectorDiffText = FormatNumber(SectorDiff, Digits);
+			DiffColor = BestLapTimeColor;
+			if(SectorDiff > 0) {
+				SectorDiffText = "+" + SectorDiffText;
+				DiffColor = CurLapTimeColor;
+			}
+			DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+		}
+		Y -= StepY;
+		DrawTime(Sector2, Digits, SectorX, Y, CurLapTimeColor, FontSize, AlignH_Right, Compact);
+	} else if(CurrentSector == 3) {
+		DrawTime(Sector1, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+		if(Sector1Best < 9999999) {
+			SectorDiff = Sector1 - Sector1Best;
+			SectorDiffText = FormatNumber(SectorDiff, Digits);
+			DiffColor = BestLapTimeColor;
+			if(SectorDiff > 0) {
+				SectorDiffText = "+" + SectorDiffText;
+				DiffColor = CurLapTimeColor;
+			}
+			DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+		}
+		Y -= StepY;
+		DrawTime(Sector2, Digits, SectorX, Y, LapTimeColor, FontSize, AlignH_Right, Compact);
+		if(Sector2Best < 9999999) {
+			SectorDiff = Sector2 - Sector2Best;
+			SectorDiffText = FormatNumber(SectorDiff, Digits);
+			DiffColor = BestLapTimeColor;
+			if(SectorDiff > 0) {
+				SectorDiffText = "+" + SectorDiffText;
+				DiffColor = CurLapTimeColor;
+			}
+			DrawText(SectorDiffText, SizeX - GapX, Y, DiffColor, FontSize, AlignH_Right);
+		}
+		Y -= StepY;
+		DrawTime(Sector3, Digits, SectorX, Y, CurLapTimeColor, FontSize, AlignH_Right, Compact);
+	}
+}
